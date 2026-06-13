@@ -4,6 +4,7 @@
  */
 
 // ---------- CONFIG & VARIABLES ----------
+let costica_srl=0;
 let windows = [];
 let windowZCounter = 1000;
 let nextWindowId = 1;
