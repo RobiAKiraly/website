@@ -377,22 +377,50 @@ window.onload = () => {
   document.getElementById("themeSwitchEaster").onclick = () => { notify("Theme toggle: glassmorphism intensified"); document.documentElement.style.setProperty("--neon-glow", "0 0 12px magenta"); };
 };
 
-// === GPT Upgrade Pack ===
-document.addEventListener('DOMContentLoaded',()=>{
- const desktop=document.querySelector('.desktop-icons');
- if(desktop){
-   [
-    ['browser','🌐','Browser'],
-    ['dashboard','📊','Dashboard'],
-    ['ai','🤖','AI'],
-    ['paint','🎨','Paint']
-   ].forEach(a=>{
-      const d=document.createElement('div');
-      d.className='desktop-icon';
-      d.dataset.app=a[0];
-      d.innerHTML=`<div class="icon">${a[1]}</div><div>${a[2]}</div>`;
-      desktop.appendChild(d);
-   });
+// ===== HUGE FEATURE PACK =====
+function createCustomWindow(title, content){
+ const id=nextWindowId++;
+ const win=document.createElement('div');
+ win.className='window';
+ win.style.cssText='position:absolute;top:80px;left:120px;width:700px;height:500px;display:flex;flex-direction:column;';
+ win.innerHTML=`<div class="window-header"><span>${title}</span><div class="window-controls">
+ <button onclick="minimizeWindow(${id})">_</button>
+ <button onclick="closeWindow(${id})">X</button></div></div>
+ <div class="window-content" style="flex:1;overflow:auto">${content}</div>`;
+ document.getElementById('desktopEnv').appendChild(win);
+ windows.push({id:id,element:win,title:title,minimized:false});
+ makeDraggableResizable(win,id); bringToFront(id); refreshTaskbar();
+}
+
+document.addEventListener('click',e=>{
+ const app=e.target.closest('[data-app]');
+ if(!app) return;
+ const a=app.dataset.app;
+ if(a==='browser'){
+   createCustomWindow('Browser',`<input id=burl style="width:80%" value="https://example.com"><button onclick="this.parentNode.querySelector('iframe').src=document.getElementById('burl').value">Go</button><iframe src='https://example.com' style='width:100%;height:90%'></iframe>`);
  }
- localStorage.setItem('neoos_version','Enhanced Edition');
+ if(a==='dashboard'){
+   createCustomWindow('Dashboard',`<canvas id='chartx'></canvas>`);
+   setTimeout(()=>{if(window.Chart){new Chart(document.getElementById('chartx'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri'],datasets:[{label:'System Load',data:[12,19,3,5,2]}]}})}},100);
+ }
+ if(a==='ai'){
+   createCustomWindow('AI Assistant',`<div id=chatlog>Ask something.</div><input id=aiq><button onclick="document.getElementById('chatlog').innerHTML+='<br><b>You:</b> '+aiq.value+'<br><b>AI:</b> Cyber response generated.'">Send</button>`);
+ }
+ if(a==='paint'){
+   createCustomWindow('Paint',`<canvas id='paintcv' width='600' height='400' style='border:1px solid'></canvas>`);
+   setTimeout(()=>{let c=document.getElementById('paintcv'); if(!c)return; let x=c.getContext('2d'),d=false; c.onmousedown=()=>d=true;c.onmouseup=()=>d=false;c.onmousemove=e=>{if(!d)return;x.fillRect(e.offsetX,e.offsetY,3,3)}} ,100);
+ }
 });
+
+document.addEventListener('contextmenu',e=>{
+ e.preventDefault();
+ let m=document.getElementById('ctxmenu');
+ if(m) m.remove();
+ m=document.createElement('div');
+ m.id='ctxmenu';
+ m.style.cssText='position:fixed;background:#111;color:#0ff;padding:10px;z-index:99999;left:'+e.pageX+'px;top:'+e.pageY+'px';
+ m.innerHTML='<div onclick="document.body.classList.toggle(`matrix`)">Toggle Theme</div>';
+ document.body.appendChild(m);
+ setTimeout(()=>document.addEventListener('click',()=>m.remove(),{once:true}),10);
+});
+
