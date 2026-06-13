@@ -1,0 +1,51 @@
+# Workflow that automatically deploys the website to GitHub Pages
+name: Deploy GitHub Pages
+
+# Trigger conditions: runs on push to main branch or manual trigger
+on:
+  push:
+    branches: ["main"]  # Automatically deploy when code is pushed to main
+  workflow_dispatch:    # Allow manual trigger from GitHub UI
+
+# Grant necessary permissions for the workflow
+permissions:
+  contents: read      # Read access to repository contents
+  pages: write        # Permission to write/deploy to GitHub Pages
+  id-token: write     # Generate OIDC token for secure authentication
+
+# Prevent multiple deployments running simultaneously
+concurrency:
+  group: "pages"              # Group all pages deployments together
+  cancel-in-progress: true    # Cancel any in-progress deployments when new one starts
+
+  # Define deployment job
+jobs:
+  deploy:
+    # Use GitHub Pages environment for deployment tracking
+    environment:
+      name: github-pages                                    # Environment name
+      url: ${{ steps.deployment.outputs.page_url }}         # Output the deployed site URL
+
+    # Run on the latest Ubuntu runner
+    runs-on: ubuntu-latest
+
+    # Steps to execute the deployment
+    steps:
+      # Step 1: Download the repository code
+      - name: Get code
+        uses: actions/checkout@v5
+
+      # Step 2: Configure GitHub Pages settings for the repository
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      # Step 3: Package the website files for deployment (entire repo folder)
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: "."  # Upload all files from root directory
+
+      # Step 4: Deploy the packaged website to GitHub Pages
+      - name: Deploy website
+        id: deployment              # Save output for later use
+        uses: actions/deploy-pages@v5

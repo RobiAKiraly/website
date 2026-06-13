@@ -1,0 +1,378 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none; /* avoid accidental text selection while dragging */
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', 'Courier New', 'Fira Code', monospace;
+  background: #000;
+}
+
+/* --- BOOT & LOGIN SCREENS --- */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #0a0f1e, #010101);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.8s ease;
+}
+
+.boot-animation {
+  text-align: center;
+  color: #0ff;
+  text-shadow: 0 0 15px cyan;
+  font-family: monospace;
+}
+
+.boot-logo {
+  font-size: 4rem;
+  letter-spacing: 8px;
+  border-right: 3px solid cyan;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: blinkCursor 0.8s step-end infinite, typing 2s steps(18);
+  width: 0;
+  animation: typing 2s steps(18) forwards, blinkCursor 0.8s infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 18ch; }
+}
+@keyframes blinkCursor {
+  50% { border-color: transparent; }
+}
+
+.loader-bar {
+  width: 280px;
+  height: 4px;
+  background: #1a2a3a;
+  margin-top: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.loader-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, cyan, magenta);
+  animation: loadBoot 2.2s forwards;
+}
+@keyframes loadBoot {
+  to { width: 100%; }
+}
+
+.login-container {
+  background: rgba(10, 20, 30, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid cyan;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+  width: 320px;
+}
+.login-container h2 {
+  color: cyan;
+  margin-bottom: 1.5rem;
+}
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #111;
+  border: 1px solid cyan;
+  color: #0ff;
+  border-radius: 8px;
+  outline: none;
+  font-family: monospace;
+}
+.login-container button {
+  background: cyan;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+.login-container button:hover {
+  background: magenta;
+  box-shadow: 0 0 15px magenta;
+}
+
+/* --- DESKTOP ENVIRONMENT --- */
+.desktop {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* animated wallpaper canvas */
+#cyber-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* desktop icons grid */
+.desktop-icons {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+.desktop-icon {
+  width: 85px;
+  text-align: center;
+  cursor: pointer;
+  color: #0ff;
+  text-shadow: 0 0 5px magenta;
+  transition: transform 0.1s;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  padding: 6px;
+}
+.desktop-icon:hover {
+  transform: scale(1.05);
+  background: rgba(0, 255, 255, 0.2);
+  border: 1px solid cyan;
+}
+.desktop-icon .icon {
+  font-size: 2.5rem;
+}
+
+/* WINDOW SYSTEM */
+.window {
+  position: absolute;
+  min-width: 280px;
+  min-height: 220px;
+  background: rgba(12, 18, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid cyan;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  resize: both;
+  overflow: hidden;
+  z-index: 100;
+  transition: box-shadow 0.1s;
+}
+.window.active {
+  border: 1px solid magenta;
+  box-shadow: 0 0 24px magenta;
+  z-index: 1000;
+}
+.window-header {
+  background: linear-gradient(90deg, #0a1f2e, #021a2a);
+  padding: 8px 12px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid cyan;
+  color: cyan;
+  font-weight: bold;
+}
+.window-controls button {
+  background: none;
+  border: none;
+  color: cyan;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.window-controls button:hover {
+  color: magenta;
+  text-shadow: 0 0 5px magenta;
+}
+.window-content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  color: #ccf;
+  font-size: 0.9rem;
+}
+
+/* TASKBAR */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 52px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid cyan;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  z-index: 5000;
+  gap: 12px;
+}
+.start-btn {
+  background: cyan;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: black;
+  transition: 0.2s;
+  box-shadow: 0 0 8px cyan;
+}
+.taskbar-windows {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+.task-btn {
+  background: #11212e;
+  border: 1px solid cyan;
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: cyan;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.task-btn:hover {
+  background: magenta;
+  color: black;
+}
+.clock {
+  font-family: monospace;
+  background: black;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #0ff;
+  letter-spacing: 2px;
+}
+
+/* START MENU */
+.start-menu {
+  position: fixed;
+  bottom: 60px;
+  left: 12px;
+  width: 260px;
+  background: rgba(8, 12, 25, 0.9);
+  backdrop-filter: blur(28px);
+  border: 1px solid cyan;
+  border-radius: 16px;
+  padding: 12px;
+  z-index: 5001;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+.start-item {
+  padding: 10px;
+  color: cyan;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.1s;
+}
+.start-item:hover {
+  background: rgba(0, 255, 255, 0.3);
+}
+
+/* context menu */
+.context-menu {
+  position: fixed;
+  background: #0a0f1fdd;
+  backdrop-filter: blur(12px);
+  border: 1px solid cyan;
+  border-radius: 10px;
+  z-index: 6000;
+  width: 160px;
+}
+.context-menu div {
+  padding: 8px 12px;
+  color: cyan;
+  cursor: pointer;
+}
+.context-menu div:hover {
+  background: magenta;
+  color: black;
+}
+
+/* Notifications */
+.notif-area {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 7000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.notification {
+  background: #000000cc;
+  backdrop-filter: blur(12px);
+  border-left: 5px solid cyan;
+  padding: 10px 15px;
+  border-radius: 12px;
+  color: #0ff;
+  animation: fadeIn 0.2s;
+}
+
+/* apps custom styles */
+.terminal-line {
+  font-family: monospace;
+  color: #0f0;
+}
+.note-item {
+  background: #001a2a;
+  margin: 8px 0;
+  padding: 6px;
+  border-radius: 6px;
+}
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+.calc-btn {
+  background: #11212e;
+  border: 1px solid cyan;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.file-browser {
+  display: flex;
+  gap: 12px;
+}
+.folder-tree {
+  width: 40%;
+  border-right: 1px solid cyan;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(40px);}
+  to { opacity: 1; transform: translateX(0);}
+}

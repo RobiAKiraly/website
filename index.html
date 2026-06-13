@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>⚡ NEO-OS 2077 | Cyberpunk Desktop Environment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BOOT + LOGIN -->
+<div id="bootScreen" class="fullscreen-overlay">
+  <div class="boot-animation">
+    <div class="boot-logo">⚡ NEO-OS 2077</div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+    <div style="margin-top:12px">initializing neural core...</div>
+  </div>
+</div>
+
+<div id="loginScreen" class="fullscreen-overlay" style="display: none;">
+  <div class="login-container">
+    <h2>🔐 CYBER-LOGIN</h2>
+    <input type="text" id="loginUser" placeholder="username" value="neon_user">
+    <input type="password" id="loginPass" placeholder="password" value="2077">
+    <button id="loginBtn">⛓️ ACCESS GRID ⛓️</button>
+  </div>
+</div>
+
+<!-- MAIN DESKTOP (hidden initially) -->
+<div id="desktopEnv" class="desktop" style="display: none;">
+  <canvas id="cyber-bg"></canvas>
+  
+  <div class="desktop-icons">
+    <div class="desktop-icon" data-app="terminal"><div class="icon">🖥️</div><div>Terminal</div></div>
+    <div class="desktop-icon" data-app="notes"><div class="icon">📝</div><div>Notes</div></div>
+    <div class="desktop-icon" data-app="calculator"><div class="icon">🧮</div><div>Calc</div></div>
+    <div class="desktop-icon" data-app="explorer"><div class="icon">📁</div><div>Explorer</div></div>
+    <div class="desktop-icon" data-app="music"><div class="icon">🎵</div><div>Music</div></div>
+  </div>
+
+  <div class="taskbar">
+    <div class="start-btn" id="startBtn">🌀 START</div>
+    <div class="taskbar-windows" id="taskbarList"></div>
+    <div class="clock" id="liveClock">--:--:--</div>
+  </div>
+
+  <div class="start-menu" id="startMenu">
+    <div class="start-item" data-app="terminal">📟 Terminal</div>
+    <div class="start-item" data-app="notes">📝 Notes App</div>
+    <div class="start-item" data-app="calculator">🔢 Calculator</div>
+    <div class="start-item" data-app="explorer">🗂️ File Explorer</div>
+    <div class="start-item" data-app="music">🎧 Music Player</div>
+    <div class="start-item" id="themeSwitchEaster">🎨 Theme: NEON</div>
+  </div>
+
+  <div class="notif-area" id="notifications"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
