@@ -8,12 +8,13 @@
 </head>
 <body>
 
-<!-- BOOT + LOGIN -->
+<canvas id="screensaverCanvas" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:99999; background:#000;"></canvas>
+
 <div id="bootScreen" class="fullscreen-overlay">
   <div class="boot-animation">
     <div class="boot-logo">⚡ NEO-OS 2077</div>
     <div class="loader-bar"><div class="loader-fill"></div></div>
-    <div style="margin-top:12px">initializing neural core...</div>
+    <div style="margin-top:12px; font-family:monospace; color:var(--neon);">initializing neural core...</div>
   </div>
 </div>
 
@@ -26,26 +27,20 @@
   </div>
 </div>
 
-<!-- MAIN DESKTOP (hidden initially) -->
 <div id="desktopEnv" class="desktop" style="display: none;">
   <canvas id="cyber-bg"></canvas>
   
-  <div class="desktop-icons">
-    <div class="desktop-icon" data-app="terminal"><div class="icon">🖥️</div><div>Terminal</div></div>
-    <div class="desktop-icon" data-app="notes"><div class="icon">📝</div><div>Notes</div></div>
-    <div class="desktop-icon" data-app="calculator"><div class="icon">🧮</div><div>Calc</div></div>
-    <div class="desktop-icon" data-app="explorer"><div class="icon">📁</div><div>Explorer</div></div>
-    <div class="desktop-icon" data-app="music"><div class="icon">🎵</div><div>Music</div></div>
-<div class="desktop-icon" data-app="browser"><div class="icon">🌐</div><div>Browser</div></div>
-<div class="desktop-icon" data-app="paint"><div class="icon">🎨</div><div>Paint</div></div>
-<div class="desktop-icon" data-app="dashboard"><div class="icon">📊</div><div>Dashboard</div></div>
-<div class="desktop-icon" data-app="ai"><div class="icon">🤖</div><div>AI</div></div>
-  </div>
+  <div class="desktop-icons" id="desktopIconsContainer"></div>
 
   <div class="taskbar">
     <div class="start-btn" id="startBtn">🌀 START</div>
     <div class="taskbar-windows" id="taskbarList"></div>
-    <div class="clock" id="liveClock">--:--:--</div>
+    
+    <div class="taskbar-right">
+      <button id="micBtn" class="taskbar-icon-btn" title="Voice Commands">🎙️</button>
+      <button id="notifBellBtn" class="taskbar-icon-btn" title="Notification History">🔔<span id="notifBadge" class="badge" style="display:none;">0</span></button>
+      <div class="clock" id="liveClock">--:--:--</div>
+    </div>
   </div>
 
   <div class="start-menu" id="startMenu">
@@ -54,18 +49,27 @@
     <div class="start-item" data-app="calculator">🔢 Calculator</div>
     <div class="start-item" data-app="explorer">🗂️ File Explorer</div>
     <div class="start-item" data-app="music">🎧 Music Player</div>
-    <div class="start-item" id="themeSwitchEaster">🎨 Theme: NEON</div>
+    <div class="start-item" data-app="settings">⚙️ System Settings</div>
+    <div class="start-item" data-app="taskmanager">📊 Task Manager</div>
+    <hr style="border:1px solid rgba(0,255,255,0.2); margin:4px 0;">
+    <div class="start-item" id="themeSwitchEaster">🎨 Quick Glow Toggle</div>
+  </div>
+
+  <div class="notif-center" id="notifCenter">
+    <div class="notif-center-header">
+      <span>Notifications History</span>
+      <button id="clearNotifsBtn">Clear</button>
+    </div>
+    <div class="dnd-toggle-container">
+      <label><input type="checkbox" id="dndCheckbox"> Do Not Disturb (DND)</label>
+    </div>
+    <div class="notif-center-list" id="notifCenterList">
+      <div style="padding:10px; text-align:center; opacity:0.5;">No notifications</div>
+    </div>
   </div>
 
   <div class="notif-area" id="notifications"></div>
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/three@latest/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap"></script>
 
 <script src="script.js"></script>
 </body>
