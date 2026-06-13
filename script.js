@@ -376,3 +376,23 @@ window.onload = () => {
   document.querySelectorAll(".desktop-icon").forEach(el => el.addEventListener("dblclick", () => launchApp(el.dataset.app)));
   document.getElementById("themeSwitchEaster").onclick = () => { notify("Theme toggle: glassmorphism intensified"); document.documentElement.style.setProperty("--neon-glow", "0 0 12px magenta"); };
 };
+
+// === GPT Upgrade Pack ===
+document.addEventListener('DOMContentLoaded',()=>{
+ const desktop=document.querySelector('.desktop-icons');
+ if(desktop){
+   [
+    ['browser','🌐','Browser'],
+    ['dashboard','📊','Dashboard'],
+    ['ai','🤖','AI'],
+    ['paint','🎨','Paint']
+   ].forEach(a=>{
+      const d=document.createElement('div');
+      d.className='desktop-icon';
+      d.dataset.app=a[0];
+      d.innerHTML=`<div class="icon">${a[1]}</div><div>${a[2]}</div>`;
+      desktop.appendChild(d);
+   });
+ }
+ localStorage.setItem('neoos_version','Enhanced Edition');
+});
